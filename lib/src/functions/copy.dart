@@ -17,6 +17,11 @@ import '../../dcli_core.dart';
 ///
 /// The [to] file must not exists unless [overwrite] is set to true.
 ///
+/// If [from] is a symlink we copy the file it links to rather than
+/// the symlink. This mimics the behaviour of gnu 'cp' command.
+///
+/// If you need to copy the actualy symlink see [symlink].
+///
 /// The default for [overwrite] is false.
 ///
 /// If an error occurs a [CopyException] is thrown.
@@ -32,14 +37,21 @@ class _Copy extends DCliFunction {
 
     verbose(() => 'copy ${truepath(from)} -> ${truepath(finalto)}');
 
-    if (overwrite == false && await exists(finalto)) {
+    if (overwrite == false && await exists(finalto, followLinks: false)) {
       throw CopyException(
         'The target file ${truepath(finalto)} already exists.',
       );
     }
 
     try {
-      await File(from).copy(finalto);
+      /// if we are copying a symlink then we copy the file rather than
+      /// the symlink as this mimicks gnu 'cp'.
+      if (await isLink(from)) {
+        final resolvedFrom = await resolveSymLink(from);
+        await File(resolvedFrom).copySync(finalto);
+      } else {
+        await File(from).copySync(finalto);
+      }
     }
     // ignore: avoid_catches_without_on_clauses
     catch (e) {
@@ -48,11 +60,12 @@ class _Copy extends DCliFunction {
       /// so in the most common case (everything is correct)
       /// we don't waste cycles on unnecessary work.
       if (!await exists(from)) {
-        throw CopyException('The from file ${truepath(from)} does not exists.');
+        throw CopyException(
+            "The 'from' file ${truepath(from)} does not exists.");
       }
       if (!await exists(dirname(to))) {
         throw CopyException(
-          'The to directory ${truepath(dirname(to))} does not exists.',
+          "The 'to' directory ${truepath(dirname(to))} does not exists.",
         );
       }
 
