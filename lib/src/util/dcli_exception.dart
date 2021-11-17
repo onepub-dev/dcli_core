@@ -1,4 +1,4 @@
-import 'stack_trace_impl.dart';
+import 'package:stacktrace_impl/stacktrace_impl.dart';
 
 /// Base class for all DCli exceptions.
 class DCliException implements Exception {

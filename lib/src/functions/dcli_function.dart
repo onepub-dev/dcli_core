@@ -1,5 +1,6 @@
+import 'package:stacktrace_impl/stacktrace_impl.dart';
+
 import '../util/dcli_exception.dart';
-import '../util/stack_trace_impl.dart';
 
 /// Base class for the classes that implement
 /// the public DCli functions.

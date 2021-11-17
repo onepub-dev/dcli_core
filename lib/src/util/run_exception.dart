@@ -1,5 +1,5 @@
 import 'package:dcli_core/src/util/dcli_exception.dart';
-import 'package:dcli_core/src/util/stack_trace_impl.dart';
+import 'package:stacktrace_impl/stacktrace_impl.dart';
 
 class RunException extends DCliException {
   ///

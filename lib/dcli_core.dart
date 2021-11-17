@@ -3,7 +3,7 @@ export 'src/util/truepath.dart' show truepath, rootPath, privatePath;
 export 'src/util/dcli_exception.dart';
 export 'src/util/run_exception.dart';
 export 'src/functions/pwd.dart' show pwd;
-export 'src/util/stack_trace_impl.dart';
+export 'package:stacktrace_impl/stacktrace_impl.dart';
 export 'src/util/stack_list.dart';
 export 'src/functions/is.dart';
 export 'src/functions/backup.dart';
