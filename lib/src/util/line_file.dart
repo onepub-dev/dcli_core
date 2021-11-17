@@ -3,6 +3,7 @@ import 'dart:convert';
 import 'dart:io';
 
 import 'package:dcli_core/dcli_core.dart' as core;
+import 'package:stacktrace_impl/stacktrace_impl.dart';
 
 import 'dcli_exception.dart';
 
@@ -44,7 +45,7 @@ class LineFile {
   Stream<String> readAll() {
     var controller = StreamController<String>();
     final inputStream = _file.openRead();
-    final stackTrace = core.StackTraceImpl();
+    final stackTrace = StackTraceImpl();
     Object? exception;
 
     final done = Completer<bool>();
@@ -94,11 +95,13 @@ class LineFile {
   /// Pass null or an '' to [newline] to not add a line terminator.
   Future<void> write(String line, {String? newline}) async {
     final finalline = line + (newline ?? Platform().eol);
-    (await _raf)
+    final r = await _raf;
+
+    r
       ..truncateSync(0)
       ..setPositionSync(0)
-      ..flushSync()
-      ..writeStringSync(finalline);
+      ..writeStringSync(finalline)
+      ..flushSync();
   }
 
   /// Appends the [line] to the file
@@ -166,7 +169,7 @@ class LineFile {
 /// Use this method in preference to directly callling [FileSync()]
 Future<R> withOpenLineFile<R>(
   String pathToFile,
-  R Function(LineFile) action, {
+  Future<R> Function(LineFile) action, {
   FileMode fileMode = FileMode.writeOnlyAppend,
 }) async {
   final file = LineFile(pathToFile, fileMode: fileMode);
@@ -174,8 +177,9 @@ Future<R> withOpenLineFile<R>(
   await file.open();
   R result;
   try {
-    result = action(file);
+    result = await action(file);
   } finally {
+    await file.flush();
     await file.close();
   }
   return result;

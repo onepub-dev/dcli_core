@@ -32,9 +32,8 @@ class _Head extends DCliFunction {
     }
 
     try {
-      var count = 0
-      ;
-      return withOpenLineFile(path, (file) {
+      var count = 0;
+      return withOpenLineFile(path, (file) async {
         return file.readAll().take(count);
 
         // .listen((line) { })
@@ -55,7 +54,6 @@ class _Head extends DCliFunction {
       );
     } finally {}
   }
-
 }
 
 /// Thrown if the [head] function encounters an error.

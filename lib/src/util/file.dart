@@ -156,7 +156,7 @@ Future<int> fileLength(String pathToFile) => File(pathToFile).length();
 /// unless you provide a [suffix] in which
 /// case the file name will be <uuid>.<suffix>
 Future<R> withTempFile<R>(
-  R Function(String tempFile) action, {
+  Future<R> Function(String tempFile) action, {
   String? suffix,
   String? pathToTempDir,
   bool create = true,
@@ -169,7 +169,7 @@ Future<R> withTempFile<R>(
 
   R result;
   try {
-    result = action(tmp);
+    result = await action(tmp);
   } finally {
     if (await exists(tmp) && !keep) {
       await delete(tmp);

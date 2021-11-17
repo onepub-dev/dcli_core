@@ -47,8 +47,8 @@ class _Replace extends DCliFunction {
       await delete(tmp);
     }
     await touch(tmp, create: true);
-    await withOpenLineFile(tmp, (tmpFile) {
-      withOpenLineFile(path, (file) async {
+    await withOpenLineFile(tmp, (tmpFile) async {
+      await withOpenLineFile(path, (file) async {
         file.readAll().listen((line) async {
           String newline;
           if (all) {
