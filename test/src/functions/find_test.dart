@@ -1,4 +1,4 @@
-// @Timeout(Duration(minutes: 20))
+@Timeout(Duration(minutes: 20))
 import 'dart:async';
 
 import 'package:dcli_core/dcli_core.dart';
