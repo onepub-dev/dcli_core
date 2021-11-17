@@ -239,7 +239,7 @@ Future<R> withFileProtection<R>(
 }
 
 Future<void> _restoreFile(_Paths paths) async {
-  await await withTempFile(
+  await withTempFile(
     (dotBak) async {
       try {
         if (await exists(paths.sourcePath)) {
