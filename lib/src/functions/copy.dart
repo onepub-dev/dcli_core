@@ -48,9 +48,9 @@ class _Copy extends DCliFunction {
       /// the symlink as this mimicks gnu 'cp'.
       if (await isLink(from)) {
         final resolvedFrom = await resolveSymLink(from);
-        await File(resolvedFrom).copySync(finalto);
+        await File(resolvedFrom).copy(finalto);
       } else {
-        await File(from).copySync(finalto);
+        await File(from).copy(finalto);
       }
     }
     // ignore: avoid_catches_without_on_clauses
