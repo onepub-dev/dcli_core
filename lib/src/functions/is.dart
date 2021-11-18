@@ -100,7 +100,7 @@ class _Is extends DCliFunction {
   }
 
   Future<bool> isLink(String path) async {
-    final fromType = await FileSystemEntity.type(path);
+    final fromType = await FileSystemEntity.type(path, followLinks: false);
     return fromType == FileSystemEntityType.link;
   }
 
