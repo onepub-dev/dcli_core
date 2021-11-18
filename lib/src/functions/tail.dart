@@ -1,3 +1,5 @@
+import 'dart:async';
+
 import 'package:dcli_core/src/util/line_file.dart';
 import 'package:dcli_core/src/util/logging.dart';
 import 'package:dcli_core/src/util/truepath.dart';
@@ -43,8 +45,11 @@ class _Tail extends DCliFunction {
     var buffer = CircularBuffer<String>(lines + 1);
     try {
       withOpenLineFile(path, (file) async {
-        file.readAll().listen((line) async {
+        late final StreamSubscription<String> sub;
+        sub = file.readAll().listen((line) async {
+          sub.pause();
           buffer.add(line);
+          sub.resume();
         });
       });
     }

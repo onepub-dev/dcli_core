@@ -1,3 +1,5 @@
+import 'dart:async';
+
 import 'package:dcli_core/src/util/line_file.dart';
 
 import '../../dcli_core.dart';
@@ -49,7 +51,9 @@ class _Replace extends DCliFunction {
     await touch(tmp, create: true);
     await withOpenLineFile(tmp, (tmpFile) async {
       await withOpenLineFile(path, (file) async {
-        file.readAll().listen((line) async {
+        late final StreamSubscription<String> sub;
+        sub = file.readAll().listen((line) async {
+          sub.pause();
           String newline;
           if (all) {
             newline = line.replaceAll(existing, replacement);
@@ -61,6 +65,7 @@ class _Replace extends DCliFunction {
           }
 
           await tmpFile.append(newline);
+          sub.resume();
         });
       });
     });

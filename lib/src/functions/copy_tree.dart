@@ -102,10 +102,12 @@ class _CopyTree extends DCliFunction {
     }
 
     var controller = StreamController<FindItem>();
-    controller.stream.listen((item) async => _process(
+    late final StreamSubscription<FindItem> sub;
+    sub = controller.stream.listen((item) async => _process(
         item.pathTo, filter, from, to,
         overwrite: overwrite, recursive: recursive));
     try {
+      sub.pause();
       (await find('*',
           workingDirectory: from,
           includeHidden: includeHidden,
@@ -116,6 +118,7 @@ class _CopyTree extends DCliFunction {
             'includeHidden: $includeHidden, recursive: $recursive, '
             'overwrite: $overwrite',
       );
+      sub.resume();
     }
     // ignore: avoid_catches_without_on_clauses
     catch (e) {
