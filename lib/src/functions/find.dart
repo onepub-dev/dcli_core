@@ -248,7 +248,7 @@ class Find extends DCliFunction {
         // before the last onData completes due to the
         // following await.
         sub.pause();
-        var type = await FileSystemEntity.type(entity.path);
+        var type = await FileSystemEntity.type(entity.path, followLinks: false);
         sub.resume();
         if (types.contains(type) &&
             matcher.match(entity.path) &&
