@@ -115,8 +115,7 @@ class _MoveTree extends DCliFunction {
           sub.pause();
           await _process(item.pathTo, filter, to, from, overwrite: overwrite);
           sub.resume();
-        }, onDone: () {
-        });
+        }, onDone: () {});
         await find('*',
             workingDirectory: from,
             includeHidden: includeHidden,
