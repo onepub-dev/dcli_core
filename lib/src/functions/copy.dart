@@ -34,8 +34,8 @@ class _Copy extends DCliFunction {
     if (await isDirectory(finalto)) {
       finalto = join(finalto, basename(from));
     }
-
-    verbose(() => 'copy ${truepath(from)} -> ${truepath(finalto)}');
+    verbose(() =>
+        'copy ${truepath(from)} -> ${truepath(finalto)} overwrite: $overwrite');
 
     if (overwrite == false && await exists(finalto, followLinks: false)) {
       throw CopyException(

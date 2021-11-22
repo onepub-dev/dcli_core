@@ -28,7 +28,8 @@ Future<void> move(String from, String to, {bool overwrite = false}) async =>
 
 class _Move extends DCliFunction {
   Future<void> move(String from, String to, {bool overwrite = false}) async {
-    verbose(() => 'move ${truepath(from)} -> ${truepath(to)}');
+    verbose(() =>
+        'move ${truepath(from)} -> ${truepath(to)} overwrite: $overwrite');
 
     var dest = to;
 
