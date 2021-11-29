@@ -119,7 +119,8 @@ class Env extends DCliFunction {
 
     return pathEnv
         .split(delimiterForPATH)
-        .where((value) => value.trim().isNotEmpty)
+        // on linux an empty path equates to the current directory.
+        // .where((value) => value.trim().isNotEmpty)
         .toList();
   }
 
