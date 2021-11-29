@@ -1,4 +1,3 @@
-import 'package:dcli_core/src/util/line_file.dart';
 import 'package:dcli_core/src/util/logging.dart';
 
 import '../../dcli_core.dart';

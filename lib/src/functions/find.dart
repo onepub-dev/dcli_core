@@ -2,7 +2,6 @@ import 'dart:async';
 import 'dart:io';
 
 import 'package:dcli_core/dcli_core.dart';
-import 'package:dcli_core/src/functions/dcli_function.dart';
 import 'package:dcli_core/src/util/logging.dart';
 import 'package:path/path.dart';
 

@@ -3,7 +3,6 @@ import 'dart:io';
 import 'package:dcli_core/src/util/logging.dart';
 
 import '../../dcli_core.dart';
-import 'dcli_function.dart';
 
 // import 'package:posix/posix.dart' as posix;
 

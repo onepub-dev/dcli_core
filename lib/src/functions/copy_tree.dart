@@ -4,7 +4,6 @@ import 'package:dcli_core/src/util/logging.dart';
 import 'package:path/path.dart';
 
 import '../../dcli_core.dart';
-import 'find.dart';
 
 ///
 /// Copies the contents of the [from] directory to the
