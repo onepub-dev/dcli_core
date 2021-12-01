@@ -86,18 +86,18 @@ class _MoveTree extends DCliFunction {
     bool Function(String file) filter = _allowAll,
     bool includeHidden = false,
   }) async {
-    if (!await isDirectory(from)) {
+    if (!isDirectory(from)) {
       throw MoveTreeException(
         'The [from] path ${truepath(from)} must be a directory.',
       );
     }
-    if (!await exists(to)) {
+    if (!exists(to)) {
       throw MoveTreeException(
         'The [to] path ${truepath(to)} must already exist.',
       );
     }
 
-    if (!await isDirectory(to)) {
+    if (!isDirectory(to)) {
       throw MoveTreeException(
         'The [to] path ${truepath(to)} must be a directory.',
       );
@@ -105,19 +105,20 @@ class _MoveTree extends DCliFunction {
 
     verbose(() => 'moveTree called ${truepath(from)} -> ${truepath(to)}');
 
+    late StreamSubscription<FindItem>? sub;
     try {
       final controller = StreamController<FindItem>();
-      late StreamSubscription<FindItem> sub;
+
       try {
         sub = controller.stream.listen((item) async {
-          sub.pause();
+          sub!.pause();
           await _process(item.pathTo, filter, to, from, overwrite: overwrite);
           sub.resume();
         }, onDone: () {});
         await find('*',
             workingDirectory: from,
             includeHidden: includeHidden,
-            progress: controller.sink);
+            progress: controller);
       } finally {
         await controller.close();
       }
@@ -128,7 +129,12 @@ class _MoveTree extends DCliFunction {
         'An error occured copying directory ${truepath(from)} '
         'to ${truepath(to)}. Error: $e',
       );
+    } finally {
+      if (sub != null) {
+        await sub.cancel();
+      }
     }
+
     return Future.value(null);
   }
 
@@ -141,13 +147,13 @@ class _MoveTree extends DCliFunction {
       // we create directories as we go.
       // only directories that contain a file that is to be
       // moved will be created.
-      if (await isDirectory(dirname(pathToFile))) {
-        if (!await exists(dirname(target))) {
+      if (isDirectory(dirname(pathToFile))) {
+        if (!exists(dirname(target))) {
           await createDir(dirname(target), recursive: true);
         }
       }
 
-      if (!overwrite && await exists(target)) {
+      if (!overwrite && exists(target)) {
         throw MoveTreeException(
           'The target file ${truepath(to)} already exists',
         );
