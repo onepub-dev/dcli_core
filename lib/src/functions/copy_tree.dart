@@ -111,7 +111,7 @@ class _CopyTree extends DCliFunction {
           workingDirectory: from,
           includeHidden: includeHidden,
           recursive: recursive,
-          progress: controller.sink);
+          progress: controller);
       verbose(
         () => 'copyTree copied: ${truepath(from)} -> ${truepath(to)}, '
             'includeHidden: $includeHidden, recursive: $recursive, '
@@ -127,6 +127,8 @@ class _CopyTree extends DCliFunction {
         'Error: $e',
       );
     }
+    await sub.cancel();
+    await controller.close();
   }
 
   Future<void> _process(
