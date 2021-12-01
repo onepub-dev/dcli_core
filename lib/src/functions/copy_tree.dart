@@ -127,7 +127,6 @@ class _CopyTree extends DCliFunction {
         'Error: $e',
       );
     }
-    await sub.cancel();
     await controller.close();
   }
 
