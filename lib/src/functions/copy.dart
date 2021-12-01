@@ -26,7 +26,7 @@ import '../util/logging.dart';
 ///
 /// If an error occurs a [CopyException] is thrown.
 Future<void> copy(String from, String to, {bool overwrite = false}) async =>
-     _Copy().copy(from, to, overwrite: overwrite);
+    _Copy().copy(from, to, overwrite: overwrite);
 
 class _Copy extends DCliFunction {
   Future<void> copy(String from, String to, {bool overwrite = false}) async {

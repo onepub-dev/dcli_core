@@ -24,7 +24,7 @@ import '../util/logging.dart';
 /// If the move fails for any reason a [MoveException] is thrown.
 ///
 Future<void> move(String from, String to, {bool overwrite = false}) async =>
-     _Move().move(from, to, overwrite: overwrite);
+    _Move().move(from, to, overwrite: overwrite);
 
 class _Move extends DCliFunction {
   Future<void> move(String from, String to, {bool overwrite = false}) async {

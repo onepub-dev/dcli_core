@@ -6,7 +6,7 @@ import '../util/dcli_exception.dart';
 /// the public DCli functions.
 class DCliFunction {}
 
-  /// Base class for all dcli function exceptions.
+/// Base class for all dcli function exceptions.
 class DCliFunctionException extends DCliException {
   /// Base class for all dcli function exceptions.
   DCliFunctionException(String message, [StackTraceImpl? stackTrace])

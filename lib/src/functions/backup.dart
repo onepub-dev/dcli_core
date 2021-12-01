@@ -7,7 +7,6 @@ import 'package:path/path.dart';
 import '../../dcli_core.dart';
 import '../util/logging.dart';
 
-
 /// Provide a very simple mechanism to backup a single file.
 ///
 /// The backup is placed in '.bak' subdirectory under the passed
@@ -28,16 +27,16 @@ import '../util/logging.dart';
 ///   [withFileProtection]
 ///
 Future<void> backupFile(String pathToFile, {bool ignoreMissing = false}) async {
-  if (! exists(pathToFile)) {
+  if (!exists(pathToFile)) {
     throw BackupFileException(
       'The backup file ${truepath(pathToFile)} is missing',
     );
   }
   final pathToBackupFile = _backupFilePath(pathToFile);
-  if ( exists(pathToBackupFile)) {
+  if (exists(pathToBackupFile)) {
     await delete(pathToBackupFile);
   }
-  if (! exists(dirname(pathToBackupFile))) {
+  if (!exists(dirname(pathToBackupFile))) {
     await createDir(dirname(pathToBackupFile));
   }
 

@@ -1,3 +1,17 @@
+# 0.0.3
+- removed unecessary code from line_file
+- fix: tail was deadlocking when straming.
+- Fix: find was consuming larges amounts of memory as it would keep scanning even when the consumer was paused. We now pausing scanning to allow the consumer to keep up.
+- Fixed a bug in copy_tree. We were prematurely canceling the subscription with the result the tree wasn't being copied.
+- added missing sub.cancel to replace function.
+- Added missing subscription cancellation.
+- Breaking: changed exists, isFile, isDirectory, isLink to synchronous functions due to slow async lint warning recommending use of Sync versions for performance.
+- removed call to slow async method in touch
+- copy_tree : Added missing close for the controller. Possible memory leak.
+- Breaking: change lastModified to return syncrhonously by recommendation of dart lints - slow async.
+- changed the PATH global variable to include 'empty' paths because on linux and empty path means the current directory.
+- added the overwrite flag value to the verbose logging for copy and move.
+
 # 0.0.2
 - isLink was failing as we were missing the followLinks: false argument which caused it to return the type of the linked entity rather than the link.
 - Fixed the X11 bug again. The find command mustn't traverse down symlinks as this can cause looping.
