@@ -78,7 +78,7 @@ import '../util/logging.dart';
 ///
 Future<void> find(
   String pattern, {
-  required Sink<FindItem> progress,
+  required StreamController<FindItem> progress,
   bool caseSensitive = false,
   bool recursive = true,
   bool includeHidden = false,
@@ -97,9 +97,12 @@ Future<void> find(
 
 /// Implementation for the [_find] function.
 class Find extends DCliFunction {
+  bool _closed = false;
+  Completer<bool> _running = Completer<bool>();
+
   Future<void> _find(
     String pattern, {
-    required Sink<FindItem> progress,
+    required StreamController<FindItem> progress,
     bool caseSensitive = false,
     bool recursive = true,
     String workingDirectory = '.',
@@ -108,6 +111,16 @@ class Find extends DCliFunction {
   }) async {
     late final String _workingDirectory;
     late final String finalpattern;
+
+    /// The listener may have been established before find is called.
+    if (progress.hasListener) {
+      _running.complete(true);
+    }
+    progress
+      ..onListen = _onListen
+      ..onPause = _onPause
+      ..onResume = _onResume
+      ..onCancel = _onCancel;
 
     /// strip any path components out of the pattern
     /// and add them to the working directory.
@@ -120,7 +133,7 @@ class Find extends DCliFunction {
     }
     finalpattern = basename(pattern);
 
-    if (!await exists(_workingDirectory)) {
+    if (!exists(_workingDirectory)) {
       throw FindException(
         'The path ${truepath(_workingDirectory)} does not exists',
       );
@@ -234,13 +247,12 @@ class Find extends DCliFunction {
 
     sub = lister.listen(
       (entity) async {
-        // if we don't puas the await causes onDone to be called
+        // if we don't pause then await causes onDone to be called
         // before the last onData completes due to the
         // following await.
         sub.pause();
-        final type =
-            await FileSystemEntity.type(entity.path, followLinks: false);
-        sub.resume();
+        final type = FileSystemEntity.typeSync(entity.path, followLinks: false);
+
         if (types.contains(type) &&
             matcher.match(entity.path) &&
             _allowed(
@@ -248,8 +260,19 @@ class Find extends DCliFunction {
               entity,
               includeHidden: includeHidden,
             )) {
+          if (_closed) {
+            await sub.cancel();
+            return;
+          }
+
+          /// If the controller has been paused or hasn't yet been
+          /// listened to then we don't want to add files to
+          /// it otherwise we may run out of memory.
+          await _running.future;
           progress.add(FindItem(entity.path, type));
         }
+
+        sub.resume();
 
         /// If we are recursing then we need to add any directories
         /// to the list of childDirectories that need to be recursed.
@@ -385,6 +408,18 @@ class Find extends DCliFunction {
   /// pass as a value to the final types argument
   /// to select links to be found
   static const link = FileSystemEntityType.link;
+
+  void _onListen() {
+    _running.complete(true);
+  }
+
+  void _onPause() {
+    _running = Completer<bool>();
+  }
+
+  FutureOr<void> _onCancel() => _closed = true;
+
+  void _onResume() => _running.complete(true);
 }
 
 class _PatternMatcher {
