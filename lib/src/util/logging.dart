@@ -1,11 +1,11 @@
 ///
-/// If [Settings.isVerbose] is true then
+/// If Settings.isVerbose is true then
 /// this method will call [callback] to
 /// get a String which will be logged to the
 /// console or the log file set via the verbose command line
 /// option.
 ///
-/// This method is more efficient than calling [Settings.verbose]
+/// This method is more efficient than calling Settings.verbose
 /// as it will only build the string if verbose is enabled.
 ///
 /// ```dart

@@ -32,5 +32,6 @@ class StackList<T> {
   /// but does not remove the item.
   T peek() => _stack.first;
 
+  /// The of items in the stack
   List<T> asList() => _stack.toList();
 }

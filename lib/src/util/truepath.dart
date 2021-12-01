@@ -1,6 +1,7 @@
-import 'package:dcli_core/src/functions/env.dart';
-import 'package:dcli_core/src/functions/pwd.dart';
 import 'package:path/path.dart';
+
+import '../functions/env.dart';
+import '../functions/pwd.dart';
 
 /// [truepath] creates an absolute and normalized path.
 ///

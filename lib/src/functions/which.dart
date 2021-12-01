@@ -54,8 +54,8 @@ import '../../dcli_core.dart';
 /// in the Windows environment variable PATHEX.
 /// This feature is intended to make it easier to implement cross platform
 /// command search. For example the dart  will be 'dart'
-/// on Linux and 'dart.bat' on Windows. Using `which('dart')` will find `dart` on
-/// linux and `dart.bat` on Windows.
+/// on Linux and 'dart.bat' on Windows. Using `which('dart')` will find `dart`
+///  on linux and `dart.bat` on Windows.
 Future<Which> which(
   String appname, {
   bool first = true,
@@ -104,11 +104,21 @@ class Which {
   bool get notfound => !_found;
 }
 
+/// Search resutls from the [which] method.
 class WhichSearch {
+  /// the app was found on the path.
   WhichSearch.found(this.path, this.exePath) : found = true;
+
+  /// the app was not found.
   WhichSearch.notfound(this.path) : found = false;
+
+  /// passed in path to search for.
   String path;
+
+  /// true if the app was found
   bool found;
+
+  /// If the app was found this is the fully qualified path to the app.
   String? exePath;
 }
 

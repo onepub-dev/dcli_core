@@ -1,8 +1,7 @@
 import 'dart:io';
 
-import 'package:dcli_core/src/util/logging.dart';
-
 import '../../dcli_core.dart';
+import '../util/logging.dart';
 
 // import 'package:posix/posix.dart' as posix;
 
@@ -12,21 +11,21 @@ import '../../dcli_core.dart';
 /// ```dart
 /// isFile("~/fred.jpg");
 /// ```
-Future<bool> isFile(String path) async => await _Is().isFile(path);
+Future<bool> isFile(String path) async => _Is().isFile(path);
 
 /// Returns true if the given [path] is a directory.
 /// ```dart
 /// isDirectory("/tmp");
 ///
 /// ```
-Future<bool> isDirectory(String path) async => await _Is().isDirectory(path);
+Future<bool> isDirectory(String path) async => _Is().isDirectory(path);
 
 /// Returns true if the given [path] is a symlink
 ///
 /// // ```dart
 /// isLink("~/fred.jpg");
 /// ```
-Future<bool> isLink(String path) async => await _Is().isLink(path);
+Future<bool> isLink(String path) async => _Is().isLink(path);
 
 /// Returns true if the given path exists.
 /// It may be a file, directory or link.
@@ -47,7 +46,7 @@ Future<bool> isLink(String path) async => await _Is().isLink(path);
 ///     [isDirectory]
 ///     [isFile]
 Future<bool> exists(String path, {bool followLinks = true}) async =>
-    await _Is().exists(path, followLinks: followLinks);
+    _Is().exists(path, followLinks: followLinks);
 
 /// Returns the datetime the path was last modified
 ///
@@ -84,7 +83,7 @@ Future<void> setLastModifed(String path, DateTime lastModified) async {
 /// empty directory.
 /// For large directories this operation can be expensive.
 Future<bool> isEmpty(String pathToDirectory) async =>
-    await _Is().isEmpty(pathToDirectory);
+    _Is().isEmpty(pathToDirectory);
 
 class _Is extends DCliFunction {
   Future<bool> isFile(String path) async {
@@ -122,8 +121,7 @@ class _Is extends DCliFunction {
     return _exists;
   }
 
-  Future<DateTime> lastModified(String path) async =>
-      await File(path).lastModified();
+  Future<DateTime> lastModified(String path) async => File(path).lastModified();
 
   Future<void> setLastModifed(String path, DateTime lastModified) async {
     await File(path).setLastModified(lastModified);
@@ -135,6 +133,6 @@ class _Is extends DCliFunction {
   Future<bool> isEmpty(String pathToDirectory) async {
     verbose(() => 'isEmpty: ${truepath(pathToDirectory)}');
 
-    return await Directory(pathToDirectory).list(followLinks: false).isEmpty;
+    return Directory(pathToDirectory).list(followLinks: false).isEmpty;
   }
 }

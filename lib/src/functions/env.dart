@@ -2,12 +2,12 @@ import 'dart:convert';
 import 'dart:io';
 
 import 'package:collection/collection.dart';
-import 'package:dcli_core/src/util/logging.dart';
-import 'package:dcli_core/src/util/truepath.dart';
 import 'package:meta/meta.dart';
 import 'package:path/path.dart';
-import '../util/dcli_exception.dart';
 
+import '../util/dcli_exception.dart';
+import '../util/logging.dart';
+import '../util/truepath.dart';
 import 'dcli_function.dart';
 
 /// Provides access to shell environment variables.

@@ -1,11 +1,10 @@
 import 'dart:async';
 
-import 'package:dcli_core/src/util/line_file.dart';
-import 'package:dcli_core/src/util/logging.dart';
-import 'package:dcli_core/src/util/truepath.dart';
-
 import 'package:circular_buffer/circular_buffer.dart';
 
+import '../util/line_file.dart';
+import '../util/logging.dart';
+import '../util/truepath.dart';
 import 'dcli_function.dart';
 import 'is.dart';
 
@@ -42,7 +41,7 @@ class _Tail extends DCliFunction {
     /// circbuffer requires a min size of 2 so we
     /// add one to make certain it is always greater than one
     /// and then adjust later.
-    var buffer = CircularBuffer<String>(lines + 1);
+    final buffer = CircularBuffer<String>(lines + 1);
     try {
       withOpenLineFile(path, (file) async {
         late final StreamSubscription<String> sub;

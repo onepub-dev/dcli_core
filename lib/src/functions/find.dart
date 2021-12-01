@@ -1,9 +1,10 @@
 import 'dart:async';
 import 'dart:io';
 
-import 'package:dcli_core/dcli_core.dart';
-import 'package:dcli_core/src/util/logging.dart';
 import 'package:path/path.dart';
+
+import '../../dcli_core.dart';
+import '../util/logging.dart';
 
 ///
 /// Returns the list of files in the current and child
@@ -75,26 +76,16 @@ import 'package:path/path.dart';
 /// If the [progress] doesn't output [stdout] then you will get no results
 /// back.
 ///
-
-//typedef FindProgress = Future<void> Function(String path);
-//typedef FindProgress = Sink<FindItem>();
-
-class FindItem {
-  FindItem(this.pathTo, this.type);
-  String pathTo;
-  FileSystemEntityType type;
-}
-
 Future<void> find(
   String pattern, {
+  required Sink<FindItem> progress,
   bool caseSensitive = false,
   bool recursive = true,
   bool includeHidden = false,
   String workingDirectory = '.',
-  required Sink<FindItem> progress,
   List<FileSystemEntityType> types = const [Find.file],
 }) async =>
-    await Find()._find(
+    Find()._find(
       pattern,
       caseSensitive: caseSensitive,
       recursive: recursive,
@@ -108,10 +99,10 @@ Future<void> find(
 class Find extends DCliFunction {
   Future<void> _find(
     String pattern, {
+    required Sink<FindItem> progress,
     bool caseSensitive = false,
     bool recursive = true,
     String workingDirectory = '.',
-    required Sink<FindItem> progress,
     List<FileSystemEntityType> types = const [Find.file],
     bool includeHidden = false,
   }) async {
@@ -148,10 +139,10 @@ class Find extends DCliFunction {
 
   Future<void> _innerFind(
     String pattern, {
+    required Sink<FindItem> progress,
     bool caseSensitive = false,
     bool recursive = true,
     String workingDirectory = '.',
-    required Sink<FindItem> progress,
     List<FileSystemEntityType> types = const [Find.file],
     bool includeHidden = false,
   }) async {
@@ -247,7 +238,8 @@ class Find extends DCliFunction {
         // before the last onData completes due to the
         // following await.
         sub.pause();
-        var type = await FileSystemEntity.type(entity.path, followLinks: false);
+        final type =
+            await FileSystemEntity.type(entity.path, followLinks: false);
         sub.resume();
         if (types.contains(type) &&
             matcher.match(entity.path) &&
@@ -493,6 +485,23 @@ class _PatternMatcher {
       [...pathParts.sublist(partsCount - directoryParts), basename(path)],
     );
   }
+}
+
+//typedef FindProgress = Future<void> Function(String path);
+//typedef FindProgress = Sink<FindItem>();
+
+/// Holds details of a file system entity returned by the
+/// [find] function.
+class FindItem {
+  /// [pathTo] is the path to the file system entity
+  /// [type] is the type of file system entity.
+  FindItem(this.pathTo, this.type);
+
+  ///  the path to the file system entity
+  String pathTo;
+
+  /// type of file system entity
+  FileSystemEntityType type;
 }
 
 /// Thrown when the [find] function encouters an error.

@@ -1,6 +1,9 @@
-import 'package:dcli_core/src/util/dcli_exception.dart';
 import 'package:stacktrace_impl/stacktrace_impl.dart';
 
+import 'dcli_exception.dart';
+
+/// Thrown when any of the process related method
+/// such as .run and .start fail.
 class RunException extends DCliException {
   ///
   RunException(

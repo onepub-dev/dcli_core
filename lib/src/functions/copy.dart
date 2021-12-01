@@ -1,9 +1,9 @@
 import 'dart:io';
 
-import 'package:dcli_core/src/util/logging.dart';
 import 'package:path/path.dart';
 
 import '../../dcli_core.dart';
+import '../util/logging.dart';
 
 ///
 /// Copies the file [from] to the path [to].
@@ -26,7 +26,7 @@ import '../../dcli_core.dart';
 ///
 /// If an error occurs a [CopyException] is thrown.
 Future<void> copy(String from, String to, {bool overwrite = false}) async =>
-    await _Copy().copy(from, to, overwrite: overwrite);
+     _Copy().copy(from, to, overwrite: overwrite);
 
 class _Copy extends DCliFunction {
   Future<void> copy(String from, String to, {bool overwrite = false}) async {

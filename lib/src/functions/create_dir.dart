@@ -1,9 +1,10 @@
 import 'dart:io';
-import 'package:dcli_core/src/util/logging.dart';
+
 import 'package:path/path.dart';
 import 'package:uuid/uuid.dart';
 
 import '../../dcli_core.dart';
+import '../util/logging.dart';
 
 /// Creates a directory as described by [path].
 /// Path may be a single path segment (e.g. bin)
@@ -49,7 +50,7 @@ Future<R> withTempDir<R>(R Function(String tempDir) action,
     result = action(dir);
   } finally {
     if (!keep) {
-      await deleteDir(dir, recursive: true);
+      await deleteDir(dir);
     }
   }
   return result;

@@ -1,6 +1,5 @@
-import 'package:dcli_core/src/util/logging.dart';
-
 import '../../dcli_core.dart';
+import '../util/logging.dart';
 
 ///
 /// Returns count [lines] from the file at [path].
@@ -11,9 +10,8 @@ import '../../dcli_core.dart';
 ///
 /// Throws a [HeadException] exception if [path] is not a file.
 ///
-Future<Stream<String>> head(String path, int lines) async {
-  return _Head().head(path, lines);
-}
+Future<Stream<String>> head(String path, int lines) async =>
+    _Head().head(path, lines);
 
 class _Head extends DCliFunction {
   Future<Stream<String>> head(
@@ -31,20 +29,8 @@ class _Head extends DCliFunction {
     }
 
     try {
-      var count = 0;
-      return withOpenLineFile(path, (file) async {
-        return file.readAll().take(count);
-
-        // .listen((line) { })
-        // await file.readAll((line) async {
-        //   yield line;
-        //   count++;
-        //   if (count >= lines) {
-        //     return false;
-        //   }
-        //   return true;
-        // });
-      });
+      const count = 0;
+      return withOpenLineFile(path, (file) async => file.readAll().take(count));
     }
     // ignore: avoid_catches_without_on_clauses
     catch (e) {

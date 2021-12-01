@@ -1,9 +1,10 @@
 import 'dart:io';
-import 'package:dcli_core/src/util/logging.dart';
+
 import 'package:path/path.dart' as p;
 import 'package:path/path.dart';
 
 import '../../dcli_core.dart';
+import '../util/logging.dart';
 
 ///
 /// Moves the file [from] to the location [to].
@@ -23,7 +24,7 @@ import '../../dcli_core.dart';
 /// If the move fails for any reason a [MoveException] is thrown.
 ///
 Future<void> move(String from, String to, {bool overwrite = false}) async =>
-    await _Move().move(from, to, overwrite: overwrite);
+     _Move().move(from, to, overwrite: overwrite);
 
 class _Move extends DCliFunction {
   Future<void> move(String from, String to, {bool overwrite = false}) async {

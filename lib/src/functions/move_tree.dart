@@ -1,9 +1,9 @@
 import 'dart:async';
 
-import 'package:dcli_core/src/util/logging.dart';
 import 'package:path/path.dart';
 
 import '../../dcli_core.dart';
+import '../util/logging.dart';
 
 /// Recursively moves the contents of the [from] directory to the
 /// to the [to] path with an optional filter.
@@ -106,7 +106,7 @@ class _MoveTree extends DCliFunction {
     verbose(() => 'moveTree called ${truepath(from)} -> ${truepath(to)}');
 
     try {
-      var controller = StreamController<FindItem>();
+      final controller = StreamController<FindItem>();
       late StreamSubscription<FindItem> sub;
       try {
         sub = controller.stream.listen((item) async {

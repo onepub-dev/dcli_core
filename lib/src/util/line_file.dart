@@ -2,9 +2,9 @@ import 'dart:async';
 import 'dart:convert';
 import 'dart:io';
 
-import 'package:dcli_core/dcli_core.dart' as core;
 import 'package:stacktrace_impl/stacktrace_impl.dart';
 
+import '../../dcli_core.dart' as core;
 import 'dcli_exception.dart';
 
 /// Provide s collection of methods to make it easy
@@ -12,7 +12,7 @@ import 'dcli_exception.dart';
 class LineFile {
   /// If you instantiate FileSync you MUST call [close].
   ///
-  /// We rececommend that you use [withOpenFile] in prefernce to directly
+  /// We rececommend that you use withOpenFile in prefernce to directly
   /// calling this method.
   LineFile(String path, {FileMode fileMode = FileMode.writeOnlyAppend})
       : _fileMode = fileMode {
@@ -38,12 +38,10 @@ class LineFile {
   /// Close and flushes the file to disk.
   Future<void> close() async => (await _raf).close();
 
-  /// reads every line from a file calling the passed [lineAction]
-  /// for each line.
-  /// if you return false from a [lineAction] call then
-  /// the read returns and no more lines are read.
+  /// Returns a [Stream] with the contents of the file
+  /// as Strings.
   Stream<String> readAll() {
-    var controller = StreamController<String>();
+    final controller = StreamController<String>();
     final inputStream = _file.openRead();
     final stackTrace = StackTraceImpl();
     Object? exception;
@@ -158,6 +156,7 @@ class LineFile {
     }
   }
 
+  /// Opens the file for random access.
   Future<void> open() async {
     /// accessing raf causes the file to open.
     await _raf;

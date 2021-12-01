@@ -1,10 +1,10 @@
 import 'dart:io';
 
-import 'package:dcli_core/dcli_core.dart';
+import 'package:crypto/crypto.dart';
 import 'package:path/path.dart';
 import 'package:uuid/uuid.dart';
-import 'package:crypto/crypto.dart';
 
+import '../../dcli_core.dart';
 import 'logging.dart';
 
 /// Opens a File and calls [action] passing in the open file.
@@ -15,7 +15,7 @@ R withOpenFile<R>(
   R Function(RandomAccessFile) action, {
   FileMode fileMode = FileMode.writeOnlyAppend,
 }) {
-  var _raf = File(pathToFile).openSync(mode: fileMode);
+  final _raf = File(pathToFile).openSync(mode: fileMode);
 
   R result;
   try {
@@ -97,7 +97,7 @@ Future<String> resolveSymLink(String pathToLink) async {
 /// Returns a FileStat instance describing the
 /// file or directory located by [path].
 ///
-Future<FileStat> stat(String path) async => File(path).stat();
+Future<FileStat> stat(String path) async => File(path).statSync();
 
 /// Generates a temporary filename in [pathToTempDir]
 /// or if inTempDir os not passed then in

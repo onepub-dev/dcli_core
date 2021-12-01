@@ -1,10 +1,11 @@
 import 'dart:io';
 
-import 'package:dcli_core/src/util/logging.dart';
 import 'package:meta/meta.dart';
 import 'package:path/path.dart' as p;
-import 'package:dcli_core/dcli_core.dart';
 import 'package:path/path.dart';
+
+import '../../dcli_core.dart';
+import '../util/logging.dart';
 
 
 /// Provide a very simple mechanism to backup a single file.

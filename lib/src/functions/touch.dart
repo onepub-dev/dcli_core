@@ -1,9 +1,9 @@
 import 'dart:io';
 
-import 'package:dcli_core/src/util/logging.dart';
 import 'package:path/path.dart' as p;
 
 import '../../dcli_core.dart';
+import '../util/logging.dart';
 
 /// Updates the last modified time stamp of a file.
 ///

@@ -1,8 +1,7 @@
 import 'dart:io';
 
-import 'package:dcli_core/src/util/logging.dart';
-
 import '../../dcli_core.dart';
+import '../util/logging.dart';
 
 /// Moves or renames the [from] directory to the
 /// to the [to] path.

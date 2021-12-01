@@ -1,9 +1,9 @@
 import 'dart:async';
 
-import 'package:dcli_core/src/util/logging.dart';
 import 'package:path/path.dart';
 
 import '../../dcli_core.dart';
+import '../util/logging.dart';
 
 ///
 /// Copies the contents of the [from] directory to the
@@ -100,18 +100,18 @@ class _CopyTree extends DCliFunction {
       );
     }
 
-    var controller = StreamController<FindItem>();
+    final controller = StreamController<FindItem>();
     late final StreamSubscription<FindItem> sub;
     sub = controller.stream.listen((item) async => _process(
         item.pathTo, filter, from, to,
         overwrite: overwrite, recursive: recursive));
     try {
       sub.pause();
-      (await find('*',
+      await find('*',
           workingDirectory: from,
           includeHidden: includeHidden,
           recursive: recursive,
-          progress: controller.sink));
+          progress: controller.sink);
       verbose(
         () => 'copyTree copied: ${truepath(from)} -> ${truepath(to)}, '
             'includeHidden: $includeHidden, recursive: $recursive, '
