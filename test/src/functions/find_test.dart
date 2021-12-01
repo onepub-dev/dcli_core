@@ -13,8 +13,11 @@ void main() {
       await find(
         '*',
         includeHidden: true,
-        workingDirectory: rootPath, // join(pwd, '..', '..', '..', '..'),
-        progress: controller.sink,
+        workingDirectory:
+            // DartProject
+            //     .self.pathToProjectRoot,
+            pwd,
+        progress: controller,
       );
     } finally {
       await controller.close();
@@ -43,8 +46,12 @@ String replaceNonPrintable(String value, {String replaceWith = ' '}) {
 bool isPrintable(int codeUnit) {
   var printable = true;
 
-  if (codeUnit < 33) printable = false;
-  if (codeUnit >= 127) printable = false;
+  if (codeUnit < 33) {
+    printable = false;
+  }
+  if (codeUnit >= 127) {
+    printable = false;
+  }
 
   return printable;
 }
