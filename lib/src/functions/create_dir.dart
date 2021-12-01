@@ -70,7 +70,7 @@ class _CreateDir extends DCliFunction {
     verbose(() => 'createDir:  ${truepath(path)} recursive: $recursive');
 
     try {
-      if (await exists(path)) {
+      if (exists(path)) {
         throw CreateDirException('The path ${truepath(path)} already exists');
       }
 

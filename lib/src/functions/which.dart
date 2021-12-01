@@ -171,7 +171,7 @@ class _Which extends DCliFunction {
     required bool extensionSearch,
   }) async {
     final pathToAppname = join(pathTo, appname);
-    if (await exists(pathToAppname)) {
+    if (exists(pathToAppname)) {
       return pathToAppname;
     }
     if (Platform.isWindows && extensionSearch && extension(appname).isEmpty) {
@@ -181,7 +181,7 @@ class _Which extends DCliFunction {
         final extensions = pathExt.split(';');
         for (final extension in extensions) {
           final fullname = '$pathToAppname$extension';
-          if (await exists(fullname)) {
+          if (exists(fullname)) {
             return fullname;
           }
         }

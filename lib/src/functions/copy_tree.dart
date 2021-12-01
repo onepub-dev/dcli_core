@@ -83,18 +83,18 @@ class _CopyTree extends DCliFunction {
     bool includeHidden = false,
     bool recursive = true,
   }) async {
-    if (!await isDirectory(from)) {
+    if (!isDirectory(from)) {
       throw CopyTreeException(
         'The [from] path ${truepath(from)} must be a directory.',
       );
     }
-    if (!await exists(to)) {
+    if (!exists(to)) {
       throw CopyTreeException(
         'The [to] path ${truepath(to)} must already exist.',
       );
     }
 
-    if (!await isDirectory(to)) {
+    if (!isDirectory(to)) {
       throw CopyTreeException(
         'The [to] path ${truepath(to)} must be a directory.',
       );
@@ -137,11 +137,11 @@ class _CopyTree extends DCliFunction {
     if (filter(file)) {
       final target = join(to, relative(file, from: from));
 
-      if (recursive && !(await exists(dirname(target)))) {
+      if (recursive && !exists(dirname(target))) {
         await createDir(dirname(target), recursive: true);
       }
 
-      if (!overwrite && await exists(target)) {
+      if (!overwrite && exists(target)) {
         throw CopyTreeException(
           'The target file ${truepath(target)} already exists.',
         );

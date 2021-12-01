@@ -30,17 +30,17 @@ Future<void> moveDir(String from, String to) async => _MoveDir().moveDir(
 
 class _MoveDir extends DCliFunction {
   Future<void> moveDir(String from, String to) async {
-    if (!await exists(from)) {
+    if (!exists(from)) {
       throw MoveDirException(
         'The [from] path ${truepath(from)} does not exists.',
       );
     }
-    if (!await isDirectory(from)) {
+    if (!isDirectory(from)) {
       throw MoveDirException(
         'The [from] path ${truepath(from)} must be a directory.,',
       );
     }
-    if (await exists(to)) {
+    if (exists(to)) {
       throw MoveDirException('The [to] path ${truepath(to)} must NOT exist.');
     }
 

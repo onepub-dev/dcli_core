@@ -23,7 +23,7 @@ class Cat extends DCliFunction {
 
     verbose(() => 'cat:  ${truepath(path)}');
 
-    if (!await exists(path)) {
+    if (!exists(path)) {
       throw CatException('The file at ${truepath(path)} does not exists');
     }
 

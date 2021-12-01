@@ -19,11 +19,11 @@ class _Delete extends DCliFunction {
   Future<void> delete(String path) async {
     verbose(() => 'delete:  ${truepath(path)}');
 
-    if (!await exists(path)) {
+    if (!exists(path)) {
       throw DeleteException('The path ${truepath(path)} does not exists.');
     }
 
-    if (await isDirectory(path)) {
+    if (isDirectory(path)) {
       throw DeleteException('The path ${truepath(path)} is a directory.');
     }
 

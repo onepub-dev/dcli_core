@@ -11,21 +11,21 @@ import '../util/logging.dart';
 /// ```dart
 /// isFile("~/fred.jpg");
 /// ```
-Future<bool> isFile(String path) async => _Is().isFile(path);
+bool isFile(String path) => _Is().isFile(path);
 
 /// Returns true if the given [path] is a directory.
 /// ```dart
 /// isDirectory("/tmp");
 ///
 /// ```
-Future<bool> isDirectory(String path) async => _Is().isDirectory(path);
+bool isDirectory(String path) => _Is().isDirectory(path);
 
 /// Returns true if the given [path] is a symlink
 ///
 /// // ```dart
 /// isLink("~/fred.jpg");
 /// ```
-Future<bool> isLink(String path) async => _Is().isLink(path);
+bool isLink(String path) => _Is().isLink(path);
 
 /// Returns true if the given path exists.
 /// It may be a file, directory or link.
@@ -45,7 +45,7 @@ Future<bool> isLink(String path) async => _Is().isLink(path);
 /// See [isLink]
 ///     [isDirectory]
 ///     [isFile]
-Future<bool> exists(String path, {bool followLinks = true}) async =>
+bool exists(String path, {bool followLinks = true}) =>
     _Is().exists(path, followLinks: followLinks);
 
 /// Returns the datetime the path was last modified
@@ -71,9 +71,9 @@ DateTime lastModified(String path) {
 /// [FileSystemException] if the file does not
 /// exist or the operation fails.
 
-Future<void> setLastModifed(String path, DateTime lastModified) async {
+void setLastModifed(String path, DateTime lastModified) {
   try {
-    await File(path).setLastModified(lastModified);
+    File(path).setLastModifiedSync(lastModified);
   } on FileSystemException catch (e) {
     throw DCliException.from(e, StackTraceImpl());
   }
@@ -86,33 +86,32 @@ Future<bool> isEmpty(String pathToDirectory) async =>
     _Is().isEmpty(pathToDirectory);
 
 class _Is extends DCliFunction {
-  Future<bool> isFile(String path) async {
-    final fromType = await FileSystemEntity.type(path);
+  bool isFile(String path) {
+    final fromType = FileSystemEntity.typeSync(path);
     return fromType == FileSystemEntityType.file;
   }
 
   /// true if the given path is a directory.
-  Future<bool> isDirectory(String path) async {
-    final fromType = await FileSystemEntity.type(path);
+  bool isDirectory(String path) {
+    final fromType = FileSystemEntity.typeSync(path);
     return fromType == FileSystemEntityType.directory;
   }
 
-  Future<bool> isLink(String path) async {
-    final fromType = await FileSystemEntity.type(path, followLinks: false);
+  bool isLink(String path) {
+    final fromType = FileSystemEntity.typeSync(path, followLinks: false);
     return fromType == FileSystemEntityType.link;
   }
 
   /// checks if the given [path] exists.
   ///
   /// Throws [ArgumentError] if [path] is an empty string.
-  Future<bool> exists(String path, {required bool followLinks}) async {
+  bool exists(String path, {required bool followLinks}) {
     if (path.isEmpty) {
       throw ArgumentError('path must not be empty.');
     }
 
-    final _exists =
-        await FileSystemEntity.type(path, followLinks: followLinks) !=
-            FileSystemEntityType.notFound;
+    final _exists = FileSystemEntity.typeSync(path, followLinks: followLinks) !=
+        FileSystemEntityType.notFound;
 
     verbose(
       () => 'exists: $_exists ${truepath(path)} followLinks: $followLinks',
@@ -121,10 +120,10 @@ class _Is extends DCliFunction {
     return _exists;
   }
 
-  Future<DateTime> lastModified(String path) async => File(path).lastModified();
+  DateTime lastModified(String path) => File(path).lastModifiedSync();
 
-  Future<void> setLastModifed(String path, DateTime lastModified) async {
-    await File(path).setLastModified(lastModified);
+  void setLastModifed(String path, DateTime lastModified) {
+    File(path).setLastModifiedSync(lastModified);
   }
 
   /// Returns true if the passed [pathToDirectory] is an

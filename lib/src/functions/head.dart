@@ -20,11 +20,11 @@ class _Head extends DCliFunction {
   ) async {
     verbose(() => 'head ${truepath(path)} lines: $lines');
 
-    if (!await exists(path)) {
+    if (!exists(path)) {
       throw HeadException('The path ${truepath(path)} does not exist.');
     }
 
-    if (!await isFile(path)) {
+    if (!isFile(path)) {
       throw HeadException('The path ${truepath(path)} is not a file.');
     }
 

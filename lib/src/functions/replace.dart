@@ -43,7 +43,7 @@ class _Replace extends DCliFunction {
   }) async {
     var changes = 0;
     final tmp = '$path.tmp';
-    if (await exists(tmp)) {
+    if (exists(tmp)) {
       await delete(tmp);
     }
     await touch(tmp, create: true);

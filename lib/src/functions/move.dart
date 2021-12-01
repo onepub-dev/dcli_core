@@ -33,11 +33,11 @@ class _Move extends DCliFunction {
 
     var dest = to;
 
-    if (await isDirectory(to)) {
+    if (isDirectory(to)) {
       dest = p.join(to, p.basename(from));
     }
 
-    if (!overwrite && await exists(dest)) {
+    if (!overwrite && exists(dest)) {
       throw MoveException(
         'The [to] path ${truepath(dest)} already exists.'
         ' Use overwrite:true ',
@@ -67,11 +67,11 @@ class _Move extends DCliFunction {
 
 /// We try to improve the OS error message, because its crap.
 Future<void> _improveError(Object e, String from, String to) async {
-  if (!await exists(from)) {
+  if (!exists(from)) {
     throw MoveException(
       'The Move of ${truepath(from)} failed as it does not exist.',
     );
-  } else if (!await exists(dirname(truepath(to)))) {
+  } else if (!exists(dirname(truepath(to)))) {
     throw MoveException(
       'The Move of ${truepath(from)} failed as the target directory '
       '${truepath(dirname(to))} does not exist.',

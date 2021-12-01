@@ -28,16 +28,16 @@ import '../util/logging.dart';
 ///   [withFileProtection]
 ///
 Future<void> backupFile(String pathToFile, {bool ignoreMissing = false}) async {
-  if (!await exists(pathToFile)) {
+  if (! exists(pathToFile)) {
     throw BackupFileException(
       'The backup file ${truepath(pathToFile)} is missing',
     );
   }
   final pathToBackupFile = _backupFilePath(pathToFile);
-  if (await exists(pathToBackupFile)) {
+  if ( exists(pathToBackupFile)) {
     await delete(pathToBackupFile);
   }
-  if (!await exists(dirname(pathToBackupFile))) {
+  if (! exists(dirname(pathToBackupFile))) {
     await createDir(dirname(pathToBackupFile));
   }
 
@@ -64,8 +64,8 @@ Future<void> restoreFile(String pathToFile,
     {bool ignoreMissing = false}) async {
   final pathToBackupFile = _backupFilePath(pathToFile);
 
-  if (await exists(pathToBackupFile)) {
-    if (await exists(pathToFile)) {
+  if (exists(pathToBackupFile)) {
+    if (exists(pathToFile)) {
       await delete(pathToFile);
     }
 
@@ -158,24 +158,24 @@ Future<R> withFileProtection<R>(
           backupDir: backupDir,
         );
 
-        if (!await exists(paths.sourcePath)) {
+        if (!exists(paths.sourcePath)) {
           /// the file/directory doesn't exist.
           /// During the restore process this path will be deleted
           /// so that once again they don't exist.
           continue;
         }
 
-        if (await isFile(paths.sourcePath)) {
-          if (!await exists(dirname(paths.backupPath))) {
+        if (isFile(paths.sourcePath)) {
+          if (!exists(dirname(paths.backupPath))) {
             await createDir(dirname(paths.backupPath), recursive: true);
           }
 
           /// the entity is a simple file.
           await copy(paths.sourcePath, paths.backupPath);
-        } else if (await isDirectory(paths.sourcePath)) {
+        } else if (isDirectory(paths.sourcePath)) {
           /// the entity is a directory so copy the whole tree
           /// recursively.
-          if (!await exists(paths.backupPath)) {
+          if (!exists(paths.backupPath)) {
             await createDir(paths.backupPath, recursive: true);
           }
           await copyTree(paths.sourcePath, paths.backupPath,
@@ -213,17 +213,17 @@ Future<R> withFileProtection<R>(
           backupDir: backupDir,
         );
         {
-          if (!await exists(paths.backupPath)) {
+          if (!exists(paths.backupPath)) {
             /// If the protected entity didn't exist before we started
             /// the make certain it doesn't exist now.
             await _deleteEntity(paths.sourcePath);
           }
 
-          if (await isFile(paths.backupPath)) {
+          if (isFile(paths.backupPath)) {
             await _restoreFile(paths);
           }
 
-          if (await isDirectory(paths.backupPath)) {
+          if (isDirectory(paths.backupPath)) {
             await _restoreDirectory(paths);
           }
         }
@@ -241,7 +241,7 @@ Future<void> _restoreFile(_Paths paths) async {
   await withTempFile(
     (dotBak) async {
       try {
-        if (await exists(paths.sourcePath)) {
+        if (exists(paths.sourcePath)) {
           await move(paths.sourcePath, dotBak);
         }
 
@@ -249,18 +249,18 @@ Future<void> _restoreFile(_Paths paths) async {
         /// TODO: consider only restoring the file if its last modified
         /// time has changed.
         await move(paths.backupPath, paths.sourcePath);
-        if (await exists(dotBak)) {
+        if (exists(dotBak)) {
           await delete(dotBak);
         }
         // ignore: avoid_catches_without_on_clauses
       } catch (e) {
         /// The restore failed so if the dotBak file
         /// exists lets at least restore that.
-        if (await exists(dotBak)) {
+        if (exists(dotBak)) {
           /// this should never happen as if we have the dotBak
           /// file then the originalFile should not exists.
           /// but just in case.
-          if (await exists(paths.sourcePath)) {
+          if (exists(paths.sourcePath)) {
             await delete(paths.sourcePath);
           }
           await move(dotBak, paths.sourcePath);
@@ -274,7 +274,7 @@ Future<void> _restoreFile(_Paths paths) async {
 Future<void> _restoreDirectory(_Paths paths) async {
   /// For directories we just recreate them if necessary.
   /// This allows us to restore empty directories.
-  if (await exists(paths.sourcePath)) {
+  if (exists(paths.sourcePath)) {
     await deleteDir(paths.sourcePath);
   }
   await createDir(paths.sourcePath, recursive: true);
@@ -285,9 +285,9 @@ Future<void> _restoreDirectory(_Paths paths) async {
 }
 
 Future<void> _deleteEntity(String path) async {
-  if (await isFile(path)) {
+  if (isFile(path)) {
     await delete(path);
-  } else if (await isDirectory(path)) {
+  } else if (isDirectory(path)) {
     await deleteDir(path);
   } else {
     verbose(() => 'Path is of unsuported type');

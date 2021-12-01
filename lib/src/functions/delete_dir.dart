@@ -33,11 +33,11 @@ class _DeleteDir extends DCliFunction {
   Future<void> deleteDir(String path, {required bool recursive}) async {
     verbose(() => 'deleteDir:  ${truepath(path)} recursive: $recursive');
 
-    if (!await exists(path)) {
+    if (!exists(path)) {
       throw DeleteDirException('The path ${truepath(path)} does not exist.');
     }
 
-    if (!await isDirectory(path)) {
+    if (!isDirectory(path)) {
       throw DeleteDirException(
         'The path ${truepath(path)} is not a directory.',
       );

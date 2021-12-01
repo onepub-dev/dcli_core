@@ -31,13 +31,13 @@ Future<void> copy(String from, String to, {bool overwrite = false}) async =>
 class _Copy extends DCliFunction {
   Future<void> copy(String from, String to, {bool overwrite = false}) async {
     var finalto = to;
-    if (await isDirectory(finalto)) {
+    if (isDirectory(finalto)) {
       finalto = join(finalto, basename(from));
     }
     verbose(() =>
         'copy ${truepath(from)} -> ${truepath(finalto)} overwrite: $overwrite');
 
-    if (overwrite == false && await exists(finalto, followLinks: false)) {
+    if (overwrite == false && exists(finalto, followLinks: false)) {
       throw CopyException(
         'The target file ${truepath(finalto)} already exists.',
       );
@@ -46,7 +46,7 @@ class _Copy extends DCliFunction {
     try {
       /// if we are copying a symlink then we copy the file rather than
       /// the symlink as this mimicks gnu 'cp'.
-      if (await isLink(from)) {
+      if (isLink(from)) {
         final resolvedFrom = await resolveSymLink(from);
         await File(resolvedFrom).copy(finalto);
       } else {
@@ -59,11 +59,11 @@ class _Copy extends DCliFunction {
       /// We do these checks only on failure
       /// so in the most common case (everything is correct)
       /// we don't waste cycles on unnecessary work.
-      if (!await exists(from)) {
+      if (!exists(from)) {
         throw CopyException(
             "The 'from' file ${truepath(from)} does not exists.");
       }
-      if (!await exists(dirname(to))) {
+      if (!exists(dirname(to))) {
         throw CopyException(
           "The 'to' directory ${truepath(dirname(to))} does not exists.",
         );

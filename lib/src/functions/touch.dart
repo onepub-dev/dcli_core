@@ -32,13 +32,13 @@ class _Touch extends DCliFunction {
 
     verbose(() => 'touch: $absolutePath create: $create');
 
-    if (!await exists(p.dirname(absolutePath))) {
+    if (!exists(p.dirname(absolutePath))) {
       throw TouchException(
         'The directory tree above $absolutePath does not exist. '
         'Create the tree and try again.',
       );
     }
-    if (create == false && !await exists(absolutePath)) {
+    if (create == false && !exists(absolutePath)) {
       throw TouchException(
         'The file $absolutePath does not exist. '
         'Did you mean to use touch(path, create: true) ?',

@@ -30,11 +30,11 @@ class _Tail extends DCliFunction {
       throw TailException('lines must be >= 1');
     }
 
-    if (!await exists(path)) {
+    if (!exists(path)) {
       throw TailException('The path ${truepath(path)} does not exist.');
     }
 
-    if (!await isFile(path)) {
+    if (!isFile(path)) {
       throw TailException('The path ${truepath(path)} is not a file.');
     }
 

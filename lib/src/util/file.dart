@@ -82,7 +82,7 @@ Future<String> resolveSymLink(String pathToLink) async {
   final normalised = canonicalize(pathToLink);
 
   String resolved;
-  if (await isDirectory(normalised)) {
+  if (isDirectory(normalised)) {
     resolved = Directory(normalised).resolveSymbolicLinksSync();
   } else {
     resolved = canonicalize(File(normalised).resolveSymbolicLinksSync());
@@ -171,7 +171,7 @@ Future<R> withTempFile<R>(
   try {
     result = await action(tmp);
   } finally {
-    if (await exists(tmp) && !keep) {
+    if (exists(tmp) && !keep) {
       await delete(tmp);
     }
   }
@@ -193,11 +193,11 @@ Future<R> withTempFile<R>(
 /// Throws [NotAFileException] if path is
 /// not a file.
 Future<Digest> calculateHash(String path) async {
-  if (!await exists(path)) {
+  if (!exists(path)) {
     throw FileNotFoundException(path);
   }
 
-  if (!await isFile(path)) {
+  if (!isFile(path)) {
     throw NotAFileException(path);
   }
   final input = File(path);
