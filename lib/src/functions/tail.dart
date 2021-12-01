@@ -43,7 +43,7 @@ class _Tail extends DCliFunction {
     /// and then adjust later.
     final buffer = CircularBuffer<String>(lines + 1);
     try {
-      withOpenLineFile(path, (file) async {
+      await withOpenLineFile(path, (file) async {
         late final StreamSubscription<String> sub;
         sub = file.readAll().listen((line) async {
           sub.pause();
