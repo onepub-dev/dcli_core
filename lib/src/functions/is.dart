@@ -55,9 +55,9 @@ Future<bool> exists(String path, {bool followLinks = true}) async =>
 /// Throws a [DCliException] with a nested
 /// [FileSystemException] if the file does not
 /// exist or the operation fails.
-Future<DateTime> lastModified(String path) async {
+DateTime lastModified(String path) {
   try {
-    return await File(path).lastModified();
+    return File(path).lastModifiedSync();
   } on FileSystemException catch (e) {
     throw DCliException.from(e, StackTraceImpl());
   }
