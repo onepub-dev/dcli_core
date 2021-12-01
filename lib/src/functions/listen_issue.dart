@@ -1,6 +1,6 @@
 import 'dart:async';
 
-void main() async {
+Future<void> main() async {
   final controller = StreamController<String>();
   late StreamSubscription<String> sub;
   final streamCompleter = Completer<void>();
@@ -33,7 +33,7 @@ void main() async {
 Future<void> _doSomethingAsync(String item) async {
   print(item);
   await Future.value(1);
-  await Future.delayed(const Duration(milliseconds: 100));
+  await Future<void>.delayed(const Duration(milliseconds: 100));
 }
 
 /// test summing a stream.
