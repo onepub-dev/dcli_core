@@ -48,7 +48,7 @@ class _Touch extends DCliFunction {
     try {
       final file = File(absolutePath);
 
-      if (await file.exists()) {
+      if (file.existsSync()) {
         final now = DateTime.now();
         await file.setLastAccessed(now);
         await file.setLastModified(now);
