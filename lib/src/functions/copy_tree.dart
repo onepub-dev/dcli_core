@@ -128,6 +128,7 @@ class _CopyTree extends DCliFunction {
       );
     }
     await controller.close();
+    await sub.cancel();
   }
 
   Future<void> _process(
