@@ -147,14 +147,16 @@ class Env extends DCliFunction {
   /// Appends [newPath] to the list of paths in the
   /// PATH environment variable.
   ///
-  /// Changing the PATH has no affect on the parent
-  /// process (shell) that launched this script.
+  /// If [newPath] is already in PATH no action is taken.
   ///
   /// Changing the PATH has no affect on the parent
   /// process (shell) that launched this script.
   ///
   /// Changing the path affects the current script
   /// and any children that it spawns.
+  ///
+  /// See: [prependToPATH]
+  ///   [removeFromPATH]
   void appendToPATH(String newPath) {
     if (!isOnPATH(newPath)) {
       final path = PATH..add(newPath);
@@ -166,11 +168,16 @@ class Env extends DCliFunction {
   /// PATH environment variable provided the
   /// path isn't already on the PATH.
   ///
+  /// If [newPath] is already in PATH no action is taken.
+  ///
   /// Changing the PATH has no affect on the parent
   /// process (shell) that launched this script.
   ///
   /// Changing the path affects the current script
   /// and any children that it spawns.
+  ///
+  /// See: [appendToPATH]
+  ///   [removeFromPATH]
   void prependToPATH(String newPath) {
     if (!isOnPATH(newPath)) {
       final path = PATH..insert(0, newPath);
@@ -185,6 +192,9 @@ class Env extends DCliFunction {
   ///
   /// Changing the path affects the current script
   /// and any children that it spawns.
+  ///
+  /// See: [appendToPATH]
+  /// [prependToPATH]
   void removeFromPATH(String oldPath) {
     final path = PATH..remove(oldPath);
     _setEnv('PATH', path.join(delimiterForPATH));
