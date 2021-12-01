@@ -42,14 +42,22 @@ class _Tail extends DCliFunction {
     /// add one to make certain it is always greater than one
     /// and then adjust later.
     final buffer = CircularBuffer<String>(lines + 1);
+    final done = Completer<bool>();
     try {
       await withOpenLineFile(path, (file) async {
-        late final StreamSubscription<String> sub;
-        sub = file.readAll().listen((line) async {
-          sub.pause();
-          buffer.add(line);
-          sub.resume();
-        });
+        late final StreamSubscription<String>? sub;
+        try {
+          sub = file.readAll().listen((line) async {
+            sub!.pause();
+            buffer.add(line);
+            sub.resume();
+          }, onDone: () => done.complete(true));
+          await done.future;
+        } finally {
+          if (sub != null) {
+            await sub.cancel();
+          }
+        }
       });
     }
     // ignore: avoid_catches_without_on_clauses
@@ -59,12 +67,18 @@ class _Tail extends DCliFunction {
       );
     }
 
+    await done.future;
+
+    final lastLines = buffer.toList();
+
     /// adjust the buffer by stripping extra line.
-    if (buffer.isFilled && buffer.isNotEmpty) buffer.removeLast();
+    if (buffer.isFilled) {
+      lastLines.removeAt(0);
+    }
 
     // return the last [lines] which will
-    // be left in the bufer.
-    for (final line in buffer) {
+    // be left in the buffer.
+    for (final line in lastLines) {
       yield line;
     }
   }
