@@ -46,34 +46,18 @@ class LineFile {
     final stackTrace = StackTraceImpl();
     Object? exception;
 
-    final done = Completer<bool>();
-
-    //late StreamSubscription<String> subscription;
-
-    // subscription =
     utf8.decoder.bind(inputStream).transform(const LineSplitter()).listen(
           (line) async {
             controller.add(line);
-            // if ((await cont) == false) {
-            //   await subscription
-            //       .cancel()
-            //       .then((finished) => done.complete(true));
-            // }
           },
           cancelOnError: true,
           //ignore: avoid_types_on_closure_parameters
           onError: (Object error) {
             exception = error;
             controller.close();
-            done.complete(false);
           },
-          onDone: () {
-            controller.close();
-            done.complete(true);
-          },
+          onDone: controller.close,
         );
-
-    // await done.future;
 
     if (exception != null) {
       if (exception is DCliException) {
