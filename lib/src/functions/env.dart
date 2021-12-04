@@ -110,6 +110,10 @@ class Env extends DCliFunction {
     }
   }
 
+  /// Returns true if an environment variable with the name
+  /// [key] exists.
+  bool exists(String key) => _envVars.keys.contains(key);
+
   /// returns the PATH environment var as an ordered
   /// array of the paths contained in the PATH.
   /// The list is ordered Left to right of the paths in
