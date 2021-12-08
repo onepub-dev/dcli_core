@@ -98,7 +98,7 @@ Future<void> find(
 /// Implementation for the [_find] function.
 class Find extends DCliFunction {
   bool _closed = false;
-  Completer<bool> _running = Completer<bool>();
+  var _running = Completer<bool>();
 
   Future<void> _find(
     String pattern, {
@@ -410,7 +410,9 @@ class Find extends DCliFunction {
   static const link = FileSystemEntityType.link;
 
   void _onListen() {
-    _running.complete(true);
+    if (!_running.isCompleted) {
+      _running.complete(true);
+    }
   }
 
   void _onPause() {
@@ -418,7 +420,6 @@ class Find extends DCliFunction {
   }
 
   FutureOr<void> _onCancel() => _closed = true;
-
   void _onResume() => _running.complete(true);
 }
 
