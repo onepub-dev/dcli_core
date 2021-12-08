@@ -1,3 +1,6 @@
+# 0.0.4
+- Added method Env().exists which checks if an environment variable exists.
+
 # 0.0.3
 - removed unecessary code from line_file
 - fix: tail was deadlocking when straming.
