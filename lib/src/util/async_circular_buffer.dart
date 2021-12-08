@@ -196,7 +196,8 @@ class AsyncCircularBuffer<T> {
 
 //   @override
 //   StreamSubscription<T> listen(void Function(T value)? onData,
-//           {Function? onError, void Function()? onDone, bool? cancelOnError}) =>
+//           {Function? onError, void Function()? onDone, bool? cancelOnError}) 
+// =>
 //       _stream.listen(onData,
 //           onError: onError, onDone: onDone, cancelOnError: cancelOnError);
 // }

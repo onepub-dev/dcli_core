@@ -12,7 +12,8 @@
 /// verbose(() => 'Log the users name $user');
 ///
 void verbose(String Function() callback) {
-  // TODO what do we do with verbose settings on a non-console platform.
+  // TODO(bsutton): what do we do with verbose settings on a
+  //non-console platform.
   // if (Settings().isVerbose) {
   //   final string = callback();
   //   if (VerboseFlag().hasOption) {
