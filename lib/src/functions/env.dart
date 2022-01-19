@@ -264,24 +264,21 @@ class Env extends DCliFunction {
   /// set of environment variables.
   void _setEnv(String name, String? value) {
     verbose(() => 'env[$name] = $value');
-    if (value == null) {
-      _envVars.remove(name);
-      if (Platform.isWindows) {
-        if (name == 'HOME' || name == 'APPDATA') {
-          _envVars
-            ..remove('HOME')
-            ..remove('APPDATA');
-        }
+    if (Platform.isWindows) {
+      final aliasHome = ['HOME', 'APPDATA'];
+      if (aliasHome.contains(name)) {
+        aliasHome.map((e) => _realSetEnv(e, value));
       }
     } else {
-      _envVars[name] = value;
+      _realSetEnv(name, value);
+    }
+  }
 
-      if (Platform.isWindows) {
-        if (name == 'HOME' || name == 'APPDATA') {
-          _envVars['HOME'] = value;
-          _envVars['APPDATA'] = value;
-        }
-      }
+  void _realSetEnv(String name, String? value) {
+    if (value == null) {
+      _envVars.remove(name);
+    } else {
+      _envVars[name] = value;
     }
   }
 
